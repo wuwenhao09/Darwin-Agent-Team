@@ -13,13 +13,16 @@ Then open <http://localhost:8000>.
 ## Page navigation
 
 - Use a mouse wheel, trackpad, **Up / Down Arrow** keys, or vertical touch swipes at page boundaries to turn pages.
-- The current page stays stationary while the next page slides up continuously and covers it, with a brief hesitation near the end.
-- Reverse navigation slides the current page away to reveal the previous page underneath.
-- The bottom previous/next controls and menu links use the same transition.
-- Each page keeps its own vertical scroll position.
+- The current page stays stationary while the next page slides up smoothly and covers it.
+- Reverse navigation slides the current page down to reveal the previous page underneath.
+- Scrolling down from Contact loops back to About; menu links use the same transition.
+- Scrolling stops for 120 ms when it reaches a page boundary. The next mouse notch or fresh smooth-scrolling pulse turns the page, even when a previous pulse's momentum is still arriving. The pause is fixed and is never extended by that momentum.
+- Forward page turns start at the top, including when looping back through About to Research. Reverse page turns restore the previous page's scroll position.
 - Browser Back/Forward and direct `#about`, `#research`, and `#contact` links are supported.
 - `research.html` redirects to the new `#research` route for backward compatibility.
 - Reduced-motion preferences are respected.
+
+Run the scroll-navigation regression checks with `node --test tests/scroll-navigation.test.cjs`.
 
 ## Update content
 

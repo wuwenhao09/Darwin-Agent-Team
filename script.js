@@ -1,6 +1,5 @@
 (() => {
   const routes = ['about', 'research', 'contact'];
-  const labels = { about: 'About', research: 'Research', contact: 'Contact' };
   const titles = {
     about: 'Darwin Agent',
     research: 'Research — Darwin Agent',
@@ -11,10 +10,6 @@
   const menuButton = document.querySelector('[data-menu-toggle]');
   const navigation = document.querySelector('[data-nav]');
   const stage = document.querySelector('[data-page-stage]');
-  const previousButton = document.querySelector('[data-previous-page]');
-  const nextButton = document.querySelector('[data-next-page]');
-  const pageNumber = document.querySelector('[data-page-number]');
-  const pageName = document.querySelector('[data-page-name]');
   const themeColor = document.querySelector('meta[name="theme-color"]');
   const pages = new Map(
     [...document.querySelectorAll('[data-page]')].map((page) => [page.dataset.page, page]),
@@ -31,14 +26,17 @@
   let isTurning = false;
   let queuedNavigation = null;
   let touchStart = null;
-  let wheelAmount = 0;
-  let wheelDirection = 0;
-  let wheelLastAt = 0;
-  let waitForWheelGestureEnd = false;
-  let wheelEndTimer = null;
+  const wheel = {
+    direction: 0, lastAt: -Infinity, lastDelta: 0,
+    peak: 0, trough: Infinity, decayed: false, riseCount: 0, riseAmount: 0,
+    amount: 0, canTurn: false, blocked: false, blockedAt: -Infinity,
+    smooth: false, scrollingRoute: null,
+  };
+  const wheelGestureGap = 160;
+  const wheelBoundaryPause = 120;
+  const wheelTurnThreshold = 12;
   const scrollPositions = { about: 0, research: 0, contact: 0 };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const animationDuration = () => (reduceMotion.matches ? 0 : 880);
 
   const closeMenu = () => {
     if (!menuButton || !navigation) return;
@@ -55,7 +53,6 @@
   };
 
   const updateChrome = (route, scrollTop = 0) => {
-    const index = routes.indexOf(route);
     document.body.dataset.route = route;
     document.title = titles[route];
     if (themeColor) themeColor.content = route === 'about' ? '#17181c' : '#f7f6f8';
@@ -70,13 +67,6 @@
       else link.removeAttribute('aria-current');
     });
 
-    if (pageNumber) pageNumber.textContent = String(index + 1).padStart(2, '0');
-    if (pageName) pageName.textContent = labels[route];
-
-    const previousRoute = routes[(index - 1 + routes.length) % routes.length];
-    const nextRoute = routes[(index + 1) % routes.length];
-    previousButton?.setAttribute('aria-label', `Previous page: ${labels[previousRoute]}`);
-    nextButton?.setAttribute('aria-label', `Next page: ${labels[nextRoute]}`);
     updateHeader(scrollTop);
   };
 
@@ -88,10 +78,10 @@
     root.style.scrollBehavior = previousBehavior;
   };
 
-  const finishTurn = ({ oldPage, newPage, oldInner, newInner, newRoute, targetScroll }) => {
+  const finishTurn = ({ oldPage, newPage, oldInner, newInner, targetScroll }) => {
     const transitionClasses = [
       'is-page-leaving', 'is-page-entering', 'page--underneath', 'page--covering',
-      'page--enter-from-bottom', 'page--exit-to-top',
+      'page--enter-from-bottom', 'page--exit-to-bottom',
     ];
 
     oldPage.classList.remove(...transitionClasses);
@@ -104,6 +94,7 @@
     oldInner.style.transform = '';
     newInner.style.transform = '';
     stage.classList.remove('is-turning');
+    stage.style.removeProperty('--page-turn-width');
     stage.removeAttribute('aria-busy');
     document.body.classList.remove('is-turning');
     jumpTo(targetScroll);
@@ -113,7 +104,7 @@
     if (queuedNavigation) {
       const next = queuedNavigation;
       queuedNavigation = null;
-      window.setTimeout(() => navigate(next.route, next), 40);
+      navigate(next.route, next);
     }
   };
 
@@ -124,39 +115,48 @@
     const oldInner = oldPage.querySelector('.page__inner');
     const newInner = newPage.querySelector('.page__inner');
     const oldScroll = window.scrollY;
-    const targetScroll = scrollPositions[newRoute] || 0;
+    let targetScroll = direction > 0 ? 0 : scrollPositions[newRoute] || 0;
 
     closeMenu();
+    wheel.scrollingRoute = null;
+    wheel.amount = 0;
+    wheel.canTurn = false;
+    wheel.blocked = true;
+    wheel.blockedAt = performance.now();
     scrollPositions[oldRoute] = oldScroll;
     currentRoute = newRoute;
     isTurning = true;
-    updateChrome(newRoute, targetScroll);
     stage.setAttribute('aria-busy', 'true');
+    // Fixed layers must keep the same width as the page with its scrollbar gutter.
+    stage.style.setProperty('--page-turn-width', `${oldPage.getBoundingClientRect().width}px`);
 
+    oldPage.classList.add('is-page-leaving');
+    newPage.classList.add('is-page-entering');
+    newPage.hidden = false;
+    targetScroll = Math.min(targetScroll, Math.max(0, newPage.scrollHeight - window.innerHeight));
     oldInner.style.transform = `translate3d(0, ${-oldScroll}px, 0)`;
     newInner.style.transform = `translate3d(0, ${-targetScroll}px, 0)`;
-    newPage.hidden = false;
     newPage.classList.add('is-active');
     newPage.removeAttribute('aria-hidden');
     oldPage.setAttribute('aria-hidden', 'true');
 
     stage.classList.add('is-turning');
     document.body.classList.add('is-turning');
-    oldPage.classList.add('is-page-leaving');
-    newPage.classList.add('is-page-entering');
+    updateChrome(newRoute, targetScroll);
 
     if (direction > 0) {
       oldPage.classList.add('page--underneath');
       newPage.classList.add('page--covering', 'page--enter-from-bottom');
     } else {
-      oldPage.classList.add('page--covering', 'page--exit-to-top');
+      oldPage.classList.add('page--covering', 'page--exit-to-bottom');
       newPage.classList.add('page--underneath');
     }
 
-    window.setTimeout(
-      () => finishTurn({ oldPage, newPage, oldInner, newInner, newRoute, targetScroll }),
-      animationDuration(),
-    );
+    const complete = () => finishTurn({ oldPage, newPage, oldInner, newInner, targetScroll });
+    const movingPage = direction > 0 ? newPage : oldPage;
+    const [animation] = movingPage.getAnimations();
+    if (reduceMotion.matches || !animation) complete();
+    else animation.finished.then(complete, complete);
   };
 
   const navigate = (route, options = {}) => {
@@ -187,10 +187,18 @@
   };
 
   const isAtPageBoundary = (direction) => {
-    if (direction > 0) {
-      return window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
-    }
-    return window.scrollY <= 4;
+    const scroller = document.scrollingElement || document.documentElement;
+    const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+    return direction > 0 ? scroller.scrollTop >= maxScroll - 4 : scroller.scrollTop <= 4;
+  };
+
+  const pauseWheelAtBoundary = () => {
+    if (wheel.scrollingRoute !== currentRoute || !isAtPageBoundary(wheel.direction)) return;
+    wheel.scrollingRoute = null;
+    wheel.canTurn = false;
+    wheel.blocked = true;
+    // Anchor the pause to reaching the edge, never to the latest momentum event.
+    wheel.blockedAt = performance.now();
   };
 
   pages.forEach((page, route) => {
@@ -218,9 +226,6 @@
     navigate(route);
   });
 
-  previousButton?.addEventListener('click', () => turnBy(-1));
-  nextButton?.addEventListener('click', () => turnBy(1));
-
   const handleLocationChange = () => {
     const route = routeFromHash();
     if (route && route !== currentRoute) navigate(route, { historyMode: 'none' });
@@ -239,6 +244,10 @@
     }
     if (editing || menuOpen || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      if (isTurning) {
+        event.preventDefault();
+        return;
+      }
       const direction = event.key === 'ArrowDown' ? 1 : -1;
       if (isAtPageBoundary(direction)) {
         event.preventDefault();
@@ -247,49 +256,81 @@
     }
   });
 
-  const finishWheelGestureLater = () => {
-    if (wheelEndTimer) window.clearTimeout(wheelEndTimer);
-    wheelEndTimer = window.setTimeout(() => {
-      waitForWheelGestureEnd = false;
-      wheelAmount = 0;
-      wheelDirection = 0;
-      wheelEndTimer = null;
-    }, 180);
-  };
-
   window.addEventListener('wheel', (event) => {
     if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-    if (waitForWheelGestureEnd) {
-      finishWheelGestureLater();
-      return;
-    }
-    if (isTurning) {
-      waitForWheelGestureEnd = true;
-      finishWheelGestureLater();
-      return;
-    }
+    if (menuButton?.getAttribute('aria-expanded') === 'true') return;
 
     const direction = event.deltaY > 0 ? 1 : -1;
-    if (!isAtPageBoundary(direction)) {
-      wheelAmount = 0;
-      wheelDirection = direction;
+    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+    const delta = Math.abs(event.deltaY) * unit;
+    const now = performance.now();
+    pauseWheelAtBoundary();
+    const gap = now - wheel.lastAt;
+    const changedDirection = direction !== wheel.direction;
+    const legacyDelta = Math.abs(event.wheelDeltaY || event.wheelDelta || 0);
+    const mouseNotch = event.deltaMode !== 0 || ((!wheel.smooth || gap >= wheelGestureGap || changedDirection)
+      && legacyDelta >= 120 && legacyDelta % 120 === 0);
+
+    // A smoothed mouse notch can start while the previous notch's tail is still arriving.
+    // Look for a sustained rise from a decayed tail, rather than requiring total silence.
+    if (wheel.decayed && delta > wheel.lastDelta * 1.2 && delta - wheel.lastDelta >= 0.5) {
+      wheel.riseCount += 1;
+      wheel.riseAmount += delta;
+    } else {
+      wheel.riseCount = 0;
+      wheel.riseAmount = 0;
+    }
+    const renewedPulse = wheel.blocked && wheel.decayed && (
+      (wheel.riseCount >= 2 && wheel.riseAmount >= 12 && delta >= Math.max(4, wheel.trough * 3))
+      || (delta >= 16 && delta >= wheel.lastDelta * 6 && delta >= wheel.trough * 6)
+    );
+    const startsGesture = changedDirection || gap >= wheelGestureGap
+      || (mouseNotch && gap >= 50) || renewedPulse;
+    if (startsGesture) {
+      wheel.amount = 0;
+      wheel.peak = delta;
+      wheel.trough = delta;
+      wheel.decayed = false;
+      wheel.riseCount = 0;
+      wheel.riseAmount = 0;
+      wheel.smooth = !mouseNotch;
+      if (!isTurning && now - wheel.blockedAt >= wheelBoundaryPause) {
+        wheel.blocked = false;
+        wheel.canTurn = isAtPageBoundary(direction);
+      }
+    } else {
+      wheel.peak = Math.max(wheel.peak, delta);
+      if (!wheel.decayed) {
+        wheel.trough = delta;
+        if (delta <= wheel.peak / 2) wheel.decayed = true;
+      } else wheel.trough = Math.min(wheel.trough, delta);
+    }
+    wheel.direction = direction;
+    wheel.lastAt = now;
+    wheel.lastDelta = delta;
+
+    if (isTurning || wheel.blocked) {
+      event.preventDefault();
       return;
     }
 
-    const now = performance.now();
-    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-    if (direction !== wheelDirection || now - wheelLastAt > 180) wheelAmount = 0;
-    wheelDirection = direction;
-    wheelLastAt = now;
-    wheelAmount += Math.abs(event.deltaY) * unit;
-
-    if (wheelAmount >= 56) {
-      wheelAmount = 0;
-      waitForWheelGestureEnd = true;
-      finishWheelGestureLater();
-      turnBy(direction);
+    if (!isAtPageBoundary(direction)) {
+      wheel.amount = 0;
+      wheel.canTurn = false;
+      wheel.scrollingRoute = currentRoute;
+      return;
     }
-  }, { passive: true });
+
+    event.preventDefault();
+    if (!wheel.canTurn) {
+      wheel.blocked = true;
+      wheel.blockedAt = now;
+      return;
+    }
+    wheel.amount += delta;
+
+    if (mouseNotch || wheel.amount >= wheelTurnThreshold) turnBy(direction);
+  }, { passive: false });
 
   document.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1 || isTurning || event.target.closest('a, button')) {
@@ -329,5 +370,8 @@
     node.textContent = String(new Date().getFullYear());
   });
 
-  window.addEventListener('scroll', () => updateHeader(), { passive: true });
+  window.addEventListener('scroll', () => {
+    updateHeader();
+    if (!isTurning) pauseWheelAtBoundary();
+  }, { passive: true });
 })();
