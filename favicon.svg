@@ -3,7 +3,7 @@
   <g fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M16 45V19l16 13 16-13v26"/><path d="m16 19 16 26 16-26"/>
   </g>
-  <g fill="#a78bfa">
+  <g fill="#ff6801">
     <circle cx="16" cy="19" r="3.5"/><circle cx="16" cy="45" r="3.5"/><circle cx="32" cy="32" r="3.5"/><circle cx="48" cy="19" r="3.5"/><circle cx="48" cy="45" r="3.5"/>
   </g>
 </svg>
