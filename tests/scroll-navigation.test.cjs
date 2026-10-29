@@ -8,7 +8,7 @@ const vm = require('node:vm');
 // a smooth mouse's next pulse must work before its previous tail has gone silent.
 const source = fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8');
 
-function createSite(route = 'research') {
+function createSite(route = 'research', pageHeights = {}) {
   let time = 1000;
   let scrollTop = 0;
   const listeners = { window: {}, document: {} };
@@ -33,7 +33,7 @@ function createSite(route = 'research') {
     };
   };
   const pages = ['about', 'research', 'contact'].map(name => {
-    const page = element(name === 'research' ? 3500 : 900);
+    const page = element(pageHeights[name] ?? (name === 'research' ? 3500 : 900));
     page.dataset.page = name;
     return page;
   });
@@ -189,13 +189,37 @@ test('full loops always reenter Research at the top', () => {
   }
 });
 
-test('reverse navigation restores the previous reading position', () => {
+test('reverse navigation enters Research at the bottom on its first visit', () => {
+  const site = createSite('contact');
+  site.wheel(-8, { legacy: 120 });
+  assert.equal(site.route, 'research');
+  assert.equal(site.scrollTop, site.maxScroll);
+});
+
+test('reverse loops enter every destination at the bottom, including Contact and About', () => {
+  const site = createSite('about', { about: 1100, contact: 1500 });
+  for (let i = 0; i < 3; i++) {
+    for (const route of ['contact', 'research', 'about']) {
+      site.scrollTo(0);
+      site.wheel(-8, { gap: 180, legacy: 120 });
+      assert.equal(site.route, route);
+      assert.equal(site.scrollTop, site.maxScroll);
+    }
+  }
+});
+
+test('changing page-turn direction always enters at the corresponding edge', () => {
   const site = createSite();
   site.scrollTo(site.maxScroll);
-  const previousScroll = site.scrollTop;
   site.wheel(8, { legacy: -120 });
   assert.equal(site.route, 'contact');
   site.wheel(-8, { gap: 180, legacy: 120 });
   assert.equal(site.route, 'research');
-  assert.equal(site.scrollTop, previousScroll);
+  assert.equal(site.scrollTop, site.maxScroll);
+  site.scrollTo(0);
+  site.wheel(-8, { gap: 180, legacy: 120 });
+  assert.equal(site.route, 'about');
+  site.wheel(8, { gap: 180, legacy: -120 });
+  assert.equal(site.route, 'research');
+  assert.equal(site.scrollTop, 0);
 });

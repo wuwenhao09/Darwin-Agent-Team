@@ -35,7 +35,6 @@
   const wheelGestureGap = 160;
   const wheelBoundaryPause = 120;
   const wheelTurnThreshold = 12;
-  const scrollPositions = { about: 0, research: 0, contact: 0 };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const closeMenu = () => {
@@ -115,7 +114,6 @@
     const oldInner = oldPage.querySelector('.page__inner');
     const newInner = newPage.querySelector('.page__inner');
     const oldScroll = window.scrollY;
-    let targetScroll = direction > 0 ? 0 : scrollPositions[newRoute] || 0;
 
     closeMenu();
     wheel.scrollingRoute = null;
@@ -123,7 +121,6 @@
     wheel.canTurn = false;
     wheel.blocked = true;
     wheel.blockedAt = performance.now();
-    scrollPositions[oldRoute] = oldScroll;
     currentRoute = newRoute;
     isTurning = true;
     stage.setAttribute('aria-busy', 'true');
@@ -133,7 +130,7 @@
     oldPage.classList.add('is-page-leaving');
     newPage.classList.add('is-page-entering');
     newPage.hidden = false;
-    targetScroll = Math.min(targetScroll, Math.max(0, newPage.scrollHeight - window.innerHeight));
+    const targetScroll = direction > 0 ? 0 : Math.max(0, newPage.scrollHeight - window.innerHeight);
     oldInner.style.transform = `translate3d(0, ${-oldScroll}px, 0)`;
     newInner.style.transform = `translate3d(0, ${-targetScroll}px, 0)`;
     newPage.classList.add('is-active');
