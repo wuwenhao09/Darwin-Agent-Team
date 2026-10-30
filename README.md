@@ -31,8 +31,8 @@ Research uses a dark laboratory visual theme, an original evolution-network illu
 - All three pages and research cards: `index.html`
 - Shared styling and page-turn animations: `styles.css`
 - Navigation and interaction logic: `script.js`
-- About hero image: `assets/images/about-hero.webp`
-- Research images: `assets/images/`
+- About hero image: `images/about-hero.webp`
+- Research images: `images/`
 - Local paper PDFs: `assets/papers/`
 
 The About artwork is temporary reference artwork from MirroS and can be replaced by overwriting the two `about-*.webp` files.
