@@ -57,133 +57,204 @@
 
     <section class="page page--research" id="research" data-page="research" aria-labelledby="research-title" hidden>
       <div class="page__inner">
-    <section class="research-intro page-shell" aria-labelledby="research-title">
-      <p class="eyebrow">Research</p>
-      <h1 id="research-title"><span>Building agents that</span> <span>learn and evolve.</span></h1>
-    </section>
+        <section class="research-intro page-shell" aria-labelledby="research-title">
+          <div class="research-intro__content">
+            <p class="research-kicker"><span aria-hidden="true"></span> Darwin Agent / Research</p>
+            <h1 id="research-title">Intelligence,<br><span>in evolution.</span></h1>
+            <p class="research-intro__summary">We study how agents learn from experience, build durable memory, and evolve together.</p>
+            <div class="research-intro__meta">
+              <span><strong>07</strong> research projects</span>
+              <span><strong>03</strong> connected directions</span>
+            </div>
+          </div>
+          <figure class="research-map">
+            <div class="research-map__heading"><span>Experience → capability</span><span aria-hidden="true">↗</span></div>
+            <svg viewBox="0 0 420 340" role="img" aria-labelledby="research-map-title">
+              <title id="research-map-title">A conceptual network of learning, memory, and evolution</title>
+              <g fill="none" stroke="#343d43" stroke-width="1">
+                <circle cx="210" cy="170" r="126" stroke-dasharray="3 7" />
+                <circle cx="210" cy="170" r="84" />
+                <path d="M35 170h350M210 20v300" stroke-dasharray="2 8" />
+                <path d="m105 98 51 20 54-74 53 80 52-26M105 242l51-20 54 74 53-80 52 26M84 170l72-52 107 6 73 46-73 46-107 6Z" />
+              </g>
+              <g fill="none" stroke="#ff873e" stroke-width="1.5">
+                <path d="M210 170 156 118 105 98M210 170l53-46 52-26M210 170l53 46 52 26M210 170l-54 52-51 20" />
+                <path d="M210 44v66M336 170h-66M210 296v-66M84 170h66" opacity=".45" />
+                <path d="m105 98 105-54 105 54M315 242l-105 54-105-54" stroke-dasharray="4 5" opacity=".5" />
+              </g>
+              <g fill="#151a1d" stroke="#67737b" stroke-width="1.5">
+                <circle cx="210" cy="44" r="6" /><circle cx="336" cy="170" r="6" />
+                <circle cx="210" cy="296" r="6" /><circle cx="84" cy="170" r="6" />
+                <circle cx="156" cy="118" r="4" /><circle cx="263" cy="124" r="4" />
+                <circle cx="263" cy="216" r="4" /><circle cx="156" cy="222" r="4" />
+              </g>
+              <g fill="#ff873e">
+                <circle cx="105" cy="98" r="5" /><circle cx="315" cy="98" r="5" />
+                <circle cx="315" cy="242" r="5" /><circle cx="105" cy="242" r="5" />
+              </g>
+              <path d="m210 130 35 20v40l-35 20-35-20v-40Z" fill="#ff6801" />
+              <g fill="none" stroke="#16191b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M194 183v-26l16 13 16-13v26M194 157l16 26 16-26" />
+              </g>
+              <g fill="#a4afb6" font-family="monospace" font-size="10" letter-spacing="1.3">
+                <text x="78" y="75">LEARNING</text><text x="298" y="75">MEMORY</text>
+                <text x="159" y="327">EVOLUTION</text>
+              </g>
+            </svg>
+            <figcaption>One agent. An expanding set of possibilities.</figcaption>
+          </figure>
+        </section>
 
-    <section class="research-list page-shell" aria-label="Research papers">
-      <article class="paper-card" id="adastep">
-        <a class="paper-card__visual" href="assets/papers/AdaStep.pdf" target="_blank" rel="noreferrer" aria-label="Read the AdaStep paper">
-          <img src="assets/images/AdaStep.png" width="2366" height="1068" alt="AdaStep adaptive weighting of episode-level and step-level advantages" loading="eager">
-        </a>
-        <div class="paper-card__content">
-          <h2>AdaStep</h2>
-          <p class="paper-card__subtitle">Adaptive Step Credit Weighting for Agentic Reinforcement Learning</p>
-          <p class="paper-card__summary">AdaStep adaptively weights step-level credit in agentic reinforcement learning, preserving useful local advantage signals while suppressing downstream noise. It requires no critic, additional rollouts, or extra model inference, and improves performance across ALFWorld, WebShop, and ScienceWorld.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="AdaStep resources">
-          <a href="assets/papers/AdaStep.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://arxiv.org/abs/2610.03223" target="_blank" rel="noreferrer"><span>arXiv</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+        <section class="research-work page-shell" aria-labelledby="research-work-title">
+          <div class="research-work__heading">
+            <div><p class="research-kicker">Ideas into systems</p><h2 id="research-work-title">Selected work</h2></div>
+            <span class="research-work__count" data-research-count aria-live="polite" aria-atomic="true">7 projects</span>
+          </div>
+          <div class="research-filters" role="group" aria-label="Filter research by direction">
+            <button type="button" class="is-active" data-research-filter="all" aria-pressed="true">All work <span>07</span></button>
+            <button type="button" data-research-filter="adaptation" aria-pressed="false">Learning &amp; adaptation <span>04</span></button>
+            <button type="button" data-research-filter="memory" aria-pressed="false">Memory &amp; world models <span>02</span></button>
+            <button type="button" data-research-filter="collective" aria-pressed="false">Collective intelligence <span>01</span></button>
+          </div>
+          <div class="research-grid" data-research-grid>
+            <article class="research-card" id="adastep" data-research-category="adaptation">
+              <a class="research-card__visual" href="assets/papers/AdaStep.pdf" target="_blank" rel="noreferrer" aria-label="Read the AdaStep paper">
+                <img src="assets/images/AdaStep.png" width="2366" height="1068" alt="AdaStep adaptive weighting of episode-level and step-level advantages" loading="eager">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Credit assignment</span><span>01</span></div>
+                <h3>AdaStep</h3>
+                <p class="research-card__subtitle">Adaptive Step Credit Weighting for Agentic Reinforcement Learning</p>
+                <p class="research-card__summary">AdaStep adaptively weights step-level credit in agentic reinforcement learning, preserving useful local advantage signals while suppressing downstream noise. It requires no critic, additional rollouts, or extra model inference, and improves performance across ALFWorld, WebShop, and ScienceWorld.</p>
+                <nav class="research-card__resources" aria-label="AdaStep resources">
+                  <a href="assets/papers/AdaStep.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://arxiv.org/abs/2610.03223" target="_blank" rel="noreferrer"><span>arXiv</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="harnessx">
-        <a class="paper-card__visual" href="https://darwin-agent.github.io/HarnessX/" target="_blank" rel="noreferrer" aria-label="Visit the HarnessX project page">
-          <img src="assets/images/HarnessX.png" width="911" height="436" alt="HarnessX compose, adapt, and evolve cycle" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>HarnessX</h2>
-          <p class="paper-card__subtitle">A Composable, Adaptive, and Evolvable Agent Harness Foundry</p>
-          <p class="paper-card__summary">HarnessX is a foundry for composing, adapting, and evolving agent harnesses. It turns execution traces into harness improvements and model training signals, closing the loop between runtime interfaces and model capability.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="HarnessX resources">
-          <a href="https://darwin-agent.github.io/HarnessX/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
-          <a href="assets/papers/HarnessX.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/HarnessX" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+            <article class="research-card" id="harnessx" data-research-category="adaptation">
+              <a class="research-card__visual" href="https://darwin-agent.github.io/HarnessX/" target="_blank" rel="noreferrer" aria-label="Visit the HarnessX project page">
+                <img src="assets/images/HarnessX.png" width="911" height="436" alt="HarnessX compose, adapt, and evolve cycle" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Agent harnesses</span><span>02</span></div>
+                <h3>HarnessX</h3>
+                <p class="research-card__subtitle">A Composable, Adaptive, and Evolvable Agent Harness Foundry</p>
+                <p class="research-card__summary">HarnessX is a foundry for composing, adapting, and evolving agent harnesses. It turns execution traces into harness improvements and model training signals, closing the loop between runtime interfaces and model capability.</p>
+                <nav class="research-card__resources" aria-label="HarnessX resources">
+                  <a href="https://darwin-agent.github.io/HarnessX/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
+                  <a href="assets/papers/HarnessX.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/HarnessX" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="harnesspai">
-        <a class="paper-card__visual" href="https://darwin-agent.github.io/HarnessPAI/" target="_blank" rel="noreferrer" aria-label="Visit the HarnessPAI project page">
-          <img src="assets/images/HarnessPAI.png" width="1061" height="463" alt="HarnessPAI framework across physical AI environments" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>HarnessPAI</h2>
-          <p class="paper-card__subtitle">An Evolving Harness for Physical AI</p>
-          <p class="paper-card__summary">A model- and embodiment-agnostic harness that uses executable programs to organize perception, reasoning, and action. It evolves across rollouts, distilling execution feedback into reusable skills without retraining the underlying action model.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="HarnessPAI resources">
-          <a href="https://darwin-agent.github.io/HarnessPAI/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
-          <a href="assets/papers/HarnessPAI.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/HarnessPAI" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+            <article class="research-card" id="harnesspai" data-research-category="adaptation">
+              <a class="research-card__visual" href="https://darwin-agent.github.io/HarnessPAI/" target="_blank" rel="noreferrer" aria-label="Visit the HarnessPAI project page">
+                <img src="assets/images/HarnessPAI.png" width="1061" height="463" alt="HarnessPAI framework across physical AI environments" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Physical AI</span><span>03</span></div>
+                <h3>HarnessPAI</h3>
+                <p class="research-card__subtitle">An Evolving Harness for Physical AI</p>
+                <p class="research-card__summary">A model- and embodiment-agnostic harness that uses executable programs to organize perception, reasoning, and action. It evolves across rollouts, distilling execution feedback into reusable skills without retraining the underlying action model.</p>
+                <nav class="research-card__resources" aria-label="HarnessPAI resources">
+                  <a href="https://darwin-agent.github.io/HarnessPAI/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
+                  <a href="assets/papers/HarnessPAI.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/HarnessPAI" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="mi-memory">
-        <a class="paper-card__visual" href="https://darwin-agent.github.io/Mi-Memory/" target="_blank" rel="noreferrer" aria-label="Visit the Mi-Memory project page">
-          <img src="assets/images/Mi-Memory.png" width="904" height="548" alt="Mi-Memory lifecycle of structure, expansion, evolution, and deployment" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>Mi-Memory</h2>
-          <p class="paper-card__subtitle">A Lifecycle Memory Framework for Personal AI</p>
-          <p class="paper-card__summary">Mi-Memory organizes personal AI memory around Structure, Expansion, Evolution, and Deployment. Its evidence-gated design supports durable user state, multimodal grounding, auditable policy changes, and deployment across edge–cloud constraints.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="Mi-Memory resources">
-          <a href="https://darwin-agent.github.io/Mi-Memory/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
-          <a href="assets/papers/Mi-Memory.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/Mi-Memory" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+            <article class="research-card" id="mi-memory" data-research-category="memory">
+              <a class="research-card__visual" href="https://darwin-agent.github.io/Mi-Memory/" target="_blank" rel="noreferrer" aria-label="Visit the Mi-Memory project page">
+                <img src="assets/images/Mi-Memory.png" width="904" height="548" alt="Mi-Memory lifecycle of structure, expansion, evolution, and deployment" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Personal AI memory</span><span>04</span></div>
+                <h3>Mi-Memory</h3>
+                <p class="research-card__subtitle">A Lifecycle Memory Framework for Personal AI</p>
+                <p class="research-card__summary">Mi-Memory organizes personal AI memory around Structure, Expansion, Evolution, and Deployment. Its evidence-gated design supports durable user state, multimodal grounding, auditable policy changes, and deployment across edge–cloud constraints.</p>
+                <nav class="research-card__resources" aria-label="Mi-Memory resources">
+                  <a href="https://darwin-agent.github.io/Mi-Memory/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
+                  <a href="assets/papers/Mi-Memory.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/Mi-Memory" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="trace">
-        <a class="paper-card__visual" href="https://darwin-agent.github.io/Car-bench-TRACE/" target="_blank" rel="noreferrer" aria-label="Visit the TRACE project page">
-          <img src="assets/images/Cat-bench-TRACE.png" width="809" height="276" alt="TRACE skill bank initialization, iterative evolution, and deployment" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>TRACE</h2>
-          <p class="paper-card__subtitle">A Self-Evolving Skill Bank for Consistent, Limit-Aware LLM Agents</p>
-          <p class="paper-card__summary">TRACE improves a skill-based agent without modifying model weights. By contrasting successful and failed trajectories, it evolves a modular Skill Bank that makes tool-using agents more consistent and more aware of their capability limits.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="TRACE resources">
-          <a href="https://darwin-agent.github.io/Car-bench-TRACE/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
-          <a href="assets/papers/Car-bench-TRACE.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/Car-bench-TRACE" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+            <article class="research-card" id="trace" data-research-category="adaptation">
+              <a class="research-card__visual" href="https://darwin-agent.github.io/Car-bench-TRACE/" target="_blank" rel="noreferrer" aria-label="Visit the TRACE project page">
+                <img src="assets/images/Cat-bench-TRACE.png" width="809" height="276" alt="TRACE skill bank initialization, iterative evolution, and deployment" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Skill evolution</span><span>05</span></div>
+                <h3>TRACE</h3>
+                <p class="research-card__subtitle">A Self-Evolving Skill Bank for Consistent, Limit-Aware LLM Agents</p>
+                <p class="research-card__summary">TRACE improves a skill-based agent without modifying model weights. By contrasting successful and failed trajectories, it evolves a modular Skill Bank that makes tool-using agents more consistent and more aware of their capability limits.</p>
+                <nav class="research-card__resources" aria-label="TRACE resources">
+                  <a href="https://darwin-agent.github.io/Car-bench-TRACE/" target="_blank" rel="noreferrer"><span>Project page</span><span aria-hidden="true">↗</span></a>
+                  <a href="assets/papers/Car-bench-TRACE.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/Car-bench-TRACE" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="world-models">
-        <a class="paper-card__visual" href="https://github.com/Darwin-Agent/awesome-world-models-for-digital-agents" target="_blank" rel="noreferrer" aria-label="Visit the Digital Agents Meet World Models repository">
-          <img src="assets/images/awesome-world-models-for-digital-agents.png" width="1430" height="944" alt="Agent-centric design space of world models" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>Digital Agents Meet World Models</h2>
-          <p class="paper-card__subtitle">A Survey</p>
-          <p class="paper-card__summary">An agent-centric survey of world models across games, web and mobile interfaces, tool-use systems, and code repositories. It organizes the field around what is modeled, how prediction is learned, and how world models are used inside the agent loop.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="Digital Agents Meet World Models resources">
-          <a href="assets/papers/awesome-world-models-for-digital-agents.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/awesome-world-models-for-digital-agents" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
+            <article class="research-card" id="world-models" data-research-category="memory">
+              <a class="research-card__visual" href="https://github.com/Darwin-Agent/awesome-world-models-for-digital-agents" target="_blank" rel="noreferrer" aria-label="Visit the Digital Agents Meet World Models repository">
+                <img src="assets/images/awesome-world-models-for-digital-agents.png" width="1430" height="944" alt="Agent-centric design space of world models" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>World models</span><span>06</span></div>
+                <h3>Digital Agents Meet World Models</h3>
+                <p class="research-card__subtitle">A Survey</p>
+                <p class="research-card__summary">An agent-centric survey of world models across games, web and mobile interfaces, tool-use systems, and code repositories. It organizes the field around what is modeled, how prediction is learned, and how world models are used inside the agent loop.</p>
+                <nav class="research-card__resources" aria-label="Digital Agents Meet World Models resources">
+                  <a href="assets/papers/awesome-world-models-for-digital-agents.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/awesome-world-models-for-digital-agents" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
 
-      <article class="paper-card" id="topological-collapse">
-        <a class="paper-card__visual" href="https://github.com/Darwin-Agent/topological-collapse-agent-societies" target="_blank" rel="noreferrer" aria-label="Visit the Topological Collapse repository">
-          <img src="assets/images/topological-collapse-agent-societies.png" width="858" height="600" alt="Topological collapse and higher-order interactions in AI agent societies" loading="lazy">
-        </a>
-        <div class="paper-card__content">
-          <h2>Topological Collapse of Higher-Order Interactions</h2>
-          <p class="paper-card__subtitle">Bottlenecks Collective Intelligence in AI Agent Societies</p>
-          <p class="paper-card__summary">A million-scale study of AI agent societies identifies hub-dominated star patterns as a structural bottleneck to collective behavior. Empirical networks, controlled simulations, and cross-model experiments show why interaction topology matters beyond individual model capability.</p>
-        </div>
-        <nav class="paper-card__resources" aria-label="Topological Collapse resources">
-          <a href="assets/papers/topological-collapse-agent-societies.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/Darwin-Agent/topological-collapse-agent-societies" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
-        </nav>
-      </article>
-    </section>
+            <article class="research-card" id="topological-collapse" data-research-category="collective">
+              <a class="research-card__visual" href="https://github.com/Darwin-Agent/topological-collapse-agent-societies" target="_blank" rel="noreferrer" aria-label="Visit the Topological Collapse repository">
+                <img src="assets/images/topological-collapse-agent-societies.png" width="858" height="600" alt="Topological collapse and higher-order interactions in AI agent societies" loading="lazy">
+              </a>
+              <div class="research-card__body">
+                <div class="research-card__meta"><span>Collective intelligence</span><span>07</span></div>
+                <h3>Topological Collapse of Higher-Order Interactions</h3>
+                <p class="research-card__subtitle">Bottlenecks Collective Intelligence in AI Agent Societies</p>
+                <p class="research-card__summary">A million-scale study of AI agent societies identifies hub-dominated star patterns as a structural bottleneck to collective behavior. Empirical networks, controlled simulations, and cross-model experiments show why interaction topology matters beyond individual model capability.</p>
+                <nav class="research-card__resources" aria-label="Topological Collapse resources">
+                  <a href="assets/papers/topological-collapse-agent-societies.pdf" target="_blank" rel="noreferrer"><span>Paper</span><span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Darwin-Agent/topological-collapse-agent-societies" target="_blank" rel="noreferrer"><span>Code</span><span aria-hidden="true">↗</span></a>
+                </nav>
+              </div>
+            </article>
+          </div>
+        </section>
 
-      <footer class="research-footer page-shell">
-    <a class="brand brand--footer" href="#about" aria-label="Darwin Agent home">
-      <svg class="brand__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path d="M9 29V11l11 9 11-9v18" /><path d="m9 11 11 18 11-18" />
-        <circle cx="9" cy="11" r="2.5" /><circle cx="9" cy="29" r="2.5" /><circle cx="20" cy="20" r="2.5" /><circle cx="31" cy="11" r="2.5" /><circle cx="31" cy="29" r="2.5" />
-      </svg>
-      <span>Darwin Agent</span>
-    </a>
-    <span>© <span data-current-year>2026</span> Darwin Agent</span>
-    <a href="#contact">Contact <span aria-hidden="true">↗</span></a>
-  </footer>
+        <section class="research-connect page-shell" aria-labelledby="research-connect-title">
+          <div class="research-connect__inner">
+            <div><p class="research-kicker">The next iteration</p><h2 id="research-connect-title">Build what comes next.</h2><p>Explore the code, follow our work, or start a conversation.</p></div>
+            <div class="research-connect__links">
+              <a href="https://github.com/Darwin-Agent" target="_blank" rel="noreferrer">Explore GitHub <span aria-hidden="true">↗</span></a>
+              <a href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </section>
+        <footer class="research-footer page-shell">
+          <a class="brand brand--footer" href="#about" aria-label="Darwin Agent home">
+            <svg class="brand__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path d="M9 29V11l11 9 11-9v18" /><path d="m9 11 11 18 11-18" />
+              <circle cx="9" cy="11" r="2.5" /><circle cx="9" cy="29" r="2.5" /><circle cx="20" cy="20" r="2.5" /><circle cx="31" cy="11" r="2.5" /><circle cx="31" cy="29" r="2.5" />
+            </svg>
+            <span>Darwin Agent</span>
+          </a>
+          <span>© <span data-current-year>2026</span> Darwin Agent</span>
+          <span class="research-footer__note">Always evolving.</span>
+        </footer>
       </div>
     </section>
 
@@ -209,7 +280,7 @@
       <img src="assets/images/about-landscape.webp" alt="" loading="lazy">
       <div class="footer__legal page-shell">
         <span>© <span data-current-year>2026</span> Darwin Agent</span>
-        <a href="#contact" data-scroll-top>Back to top <span aria-hidden="true">↑</span></a>
+        <a href="#about" data-return-home aria-label="Return to the first page">Back to top <span aria-hidden="true">↑</span></a>
       </div>
     </div>
       </div>

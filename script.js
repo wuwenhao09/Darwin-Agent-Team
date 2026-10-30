@@ -54,10 +54,11 @@
   const updateChrome = (route, scrollTop = 0) => {
     document.body.dataset.route = route;
     document.title = titles[route];
-    if (themeColor) themeColor.content = route === 'about' ? '#17181c' : '#f7f6f8';
+    if (themeColor) themeColor.content = route === 'research' ? '#101315' : route === 'about' ? '#17181c' : '#f7f6f8';
 
     header?.classList.toggle('site-header--overlay', route === 'about');
-    header?.classList.toggle('site-header--light', route !== 'about');
+    header?.classList.toggle('site-header--light', route === 'contact');
+    header?.classList.toggle('site-header--dark', route === 'research');
 
     navigation?.querySelectorAll('a[href^="#"]').forEach((link) => {
       const active = link.getAttribute('href') === `#${route}`;
@@ -209,6 +210,26 @@
   if (!routeFromHash()) window.history.replaceState({ route: currentRoute }, '', `#${currentRoute}`);
   updateChrome(currentRoute, 0);
 
+  const researchCards = [...document.querySelectorAll('[data-research-category]')];
+  const researchFilters = [...document.querySelectorAll('[data-research-filter]')];
+  const researchCount = document.querySelector('[data-research-count]');
+  researchFilters.forEach((button) => {
+    button.addEventListener('click', () => {
+      const category = button.dataset.researchFilter;
+      researchFilters.forEach((filter) => {
+        const active = filter === button;
+        filter.classList.toggle('is-active', active);
+        filter.setAttribute('aria-pressed', String(active));
+      });
+      let visibleCount = 0;
+      researchCards.forEach((card) => {
+        card.hidden = category !== 'all' && card.dataset.researchCategory !== category;
+        if (!card.hidden) visibleCount += 1;
+      });
+      if (researchCount) researchCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'project' : 'projects'}`;
+    });
+  });
+
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href^="#"]');
     if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -216,11 +237,7 @@
     if (!routes.includes(route)) return;
 
     event.preventDefault();
-    if (link.hasAttribute('data-scroll-top') && route === currentRoute) {
-      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-      return;
-    }
-    navigate(route);
+    navigate(route, { direction: link.hasAttribute('data-return-home') ? 1 : undefined });
   });
 
   const handleLocationChange = () => {
