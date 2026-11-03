@@ -11,6 +11,7 @@ const source = fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8');
 function createSite(route = 'research', pageHeights = {}) {
   let time = 1000;
   let scrollTop = 0;
+  let lastTurnDirection = null;
   const listeners = { window: {}, document: {} };
   const element = (height = 900) => {
     const classes = new Set();
@@ -29,7 +30,11 @@ function createSite(route = 'research', pageHeights = {}) {
       removeAttribute: name => attributes.delete(name),
       querySelector: () => inner,
       getBoundingClientRect: () => ({ width: 1440 }),
-      getAnimations: () => [],
+      getAnimations: () => {
+        if (classes.has('page--enter-from-bottom')) lastTurnDirection = 1;
+        if (classes.has('page--exit-to-bottom')) lastTurnDirection = -1;
+        return [];
+      },
     };
   };
   const pages = ['about', 'research', 'contact'].map(name => {
@@ -69,6 +74,19 @@ function createSite(route = 'research', pageHeights = {}) {
     get route() { return body.dataset.route; },
     get scrollTop() { return scrollTop; },
     get maxScroll() { return maxScroll(); },
+    get lastTurnDirection() { return lastTurnDirection; },
+    clickRoute(route, { nextPage = false } = {}) {
+      const link = {
+        getAttribute: name => name === 'href' ? `#${route}` : null,
+        hasAttribute: name => name === 'data-page-next' && nextPage,
+      };
+      const event = {
+        target: { closest: () => link }, button: 0, defaultPrevented: false,
+        preventDefault() { this.defaultPrevented = true; },
+      };
+      listeners.document.click(event);
+      return event.defaultPrevented;
+    },
     wait(ms) { time += ms; },
     scrollTo(value) {
       window.scrollTo(0, value);
@@ -222,4 +240,21 @@ test('changing page-turn direction always enters at the corresponding edge', () 
   site.wheel(8, { gap: 180, legacy: -120 });
   assert.equal(site.route, 'research');
   assert.equal(site.scrollTop, 0);
+});
+
+test('next-page buttons loop forward from any scroll position and return to the top of About', () => {
+  const site = createSite('about', { about: 1100, contact: 1500 });
+  for (let i = 0; i < 2; i++) {
+    for (const route of ['research', 'contact', 'about']) {
+      site.scrollTo(site.maxScroll / 2);
+      assert.equal(site.clickRoute(route, { nextPage: true }), true);
+      assert.equal(site.route, route);
+      assert.equal(site.lastTurnDirection, 1);
+      assert.equal(site.scrollTop, 0);
+    }
+  }
+  site.clickRoute('contact');
+  site.clickRoute('about');
+  assert.equal(site.lastTurnDirection, -1);
+  assert.equal(site.scrollTop, site.maxScroll);
 });

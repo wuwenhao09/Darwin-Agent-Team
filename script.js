@@ -246,7 +246,7 @@
     if (!routes.includes(route)) return;
 
     event.preventDefault();
-    navigate(route, { direction: link.hasAttribute('data-return-home') ? 1 : undefined });
+    navigate(route, { direction: link.hasAttribute('data-page-next') ? 1 : undefined });
   });
 
   const handleLocationChange = () => {

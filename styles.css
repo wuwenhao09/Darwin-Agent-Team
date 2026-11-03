@@ -187,21 +187,26 @@ button { color: inherit; font: inherit; }
   text-wrap: balance;
   animation: hero-enter 900ms cubic-bezier(.2,.7,.2,1) both;
 }
-.hero__down {
-  position: absolute;
+.page-next {
+  position: fixed;
+  z-index: 10;
   right: var(--gutter);
   bottom: clamp(66px, 8.5vh, 110px);
   display: grid;
   width: 54px;
   height: 54px;
   place-items: center;
+  color: var(--white);
   border: 1px solid rgba(255,255,255,.55);
   border-radius: 50%;
+  background: rgba(14, 23, 24, .18);
   transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
-.hero__down svg { width: 20px; height: 20px; }
-.hero__down path { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.hero__down:hover { color: var(--ink); background: var(--white); transform: translateY(3px); }
+.page-next svg { width: 20px; height: 20px; }
+.page-next path { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.page-next--research { border-color: #66747c; background: #191e21; box-shadow: 0 4px 20px rgba(0, 0, 0, .2); }
+.page-next--contact { background: rgba(14, 23, 24, .55); }
+.page-next:hover { color: var(--ink); background: var(--white); transform: translateY(3px); }
 .hero__credit { position: absolute; left: var(--gutter); bottom: 24px; display: inline-flex; align-items: baseline; gap: 7px; max-width: calc(100% - 110px); color: rgba(255, 255, 255, .78); font-size: 10px; line-height: 1.6; letter-spacing: .02em; }
 .hero__credit:hover { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
 .hero__credit span { flex: 0 0 auto; }
@@ -574,7 +579,7 @@ body.is-turning { overflow: hidden; }
   .hero__image { object-position: 80% center; }
   .hero__content { padding-bottom: 88px; }
   .hero h1 { max-width: 480px; font-size: clamp(68px, 21vw, 108px); line-height: .9; }
-  .hero__down { right: var(--gutter); bottom: 28px; width: 44px; height: 44px; }
+  .page-next { bottom: 28px; width: 44px; height: 44px; }
   .footer__content { grid-template-columns: 1fr; gap: 60px; align-items: start; }
   .footer__heading h2 { font-size: 76px; }
   .footer__landscape { height: 250px; }
