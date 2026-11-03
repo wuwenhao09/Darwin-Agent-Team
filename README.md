@@ -26,13 +26,25 @@ Run the scroll-navigation regression checks with `node --test tests/scroll-navig
 
 ## Update content
 
-Research uses a dark laboratory visual theme, an original evolution-network illustration, and a responsive project grid with the same card layout for every paper. The direction filters group the seven projects into learning/adaptation, memory/world models, and collective intelligence.
+Research uses a dark visual theme, an interactive research tree, and a responsive project grid with the same card layout for every paper. The tree and direction filters share one selection and derive project counts from the cards. Selecting a branch scrolls to the filtered work.
+
+Projects are grouped by their primary research contribution, rather than application domain. Learning includes both model training and skill-bank evolution; harness research focuses on the runtime that organizes an agent's execution. Memory and predictive world models have separate directions.
+
+| Direction | Projects |
+| --- | --- |
+| Learning & evolution | AdaStep, TRACE |
+| Agent harnesses | HarnessX, HarnessPAI |
+| Agent memory | Mi-Memory |
+| World models | Digital Agents Meet World Models |
+| Collective intelligence | Topological Collapse |
 
 - All three pages and research cards: `index.html`
 - Shared styling and page-turn animations: `styles.css`
 - Navigation and interaction logic: `script.js`
-- About hero image: `images/about-hero.webp`
+- About hero image: `images/about-hero-monet.webp` with `images/about-hero-monet-mobile.webp` for small screens
 - Research images: `images/`
+- Team logo, wordmarks, avatar, and design preview: `images/brand/` (usage notes in `images/brand/README.md`)
+- Browser icons: `favicon.svg`, `favicon.png`
 - Legacy local paper PDFs (not linked): `assets/papers/`
 
-The About artwork is temporary reference artwork from MirroS and can be replaced by overwriting the two `about-*.webp` files.
+The About cover uses Claude Monet's *The Seine at Giverny* (1897), from the National Gallery of Art's public-domain Open Access collection. Source and processing details are recorded in `images/artwork-sources.md`. The previous cover remains at `images/about-hero.webp`; the Contact landscape is still the temporary reference artwork from MirroS.

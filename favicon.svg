@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="15" fill="#17171b"/>
-  <g fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 45V19l16 13 16-13v26"/><path d="m16 19 16 26 16-26"/>
-  </g>
-  <g fill="#ff6801">
-    <circle cx="16" cy="19" r="3.5"/><circle cx="16" cy="45" r="3.5"/><circle cx="32" cy="32" r="3.5"/><circle cx="48" cy="19" r="3.5"/><circle cx="48" cy="45" r="3.5"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="logo-title"><title id="logo-title">Darwin Agent</title><rect width="64" height="64" rx="14" fill="#101315"/><g transform="translate(4 4) scale(.875)" fill="none" stroke="#ff6801" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11H11V53H20M32 11C44 11 54 20 54 32S44 53 32 53"/><path d="M29 42V32L23 26M29 32L40 21" stroke-width="5.5"/></g></svg>

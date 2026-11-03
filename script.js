@@ -213,11 +213,17 @@
   const researchCards = [...document.querySelectorAll('[data-research-category]')];
   const researchFilters = [...document.querySelectorAll('[data-research-filter]')];
   const researchCount = document.querySelector('[data-research-count]');
+  const researchWork = document.querySelector('.research-work');
   researchFilters.forEach((button) => {
+    const count = researchCards.filter((card) => button.dataset.researchFilter === 'all'
+      || card.dataset.researchCategory === button.dataset.researchFilter).length;
+    const countLabel = button.querySelector('[data-filter-count]');
+    if (countLabel) countLabel.textContent = String(count).padStart(2, '0');
+
     button.addEventListener('click', () => {
       const category = button.dataset.researchFilter;
       researchFilters.forEach((filter) => {
-        const active = filter === button;
+        const active = filter.dataset.researchFilter === category;
         filter.classList.toggle('is-active', active);
         filter.setAttribute('aria-pressed', String(active));
       });
@@ -227,6 +233,9 @@
         if (!card.hidden) visibleCount += 1;
       });
       if (researchCount) researchCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'project' : 'projects'}`;
+      if (button.classList.contains('research-map__branch')) {
+        researchWork?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+      }
     });
   });
 
